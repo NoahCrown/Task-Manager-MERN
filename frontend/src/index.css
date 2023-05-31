@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins";
+}
+
+:root {
+  --bg-color: #111111;
+  --grey-accent: #444444;
+  --font-color: #FDFDFD;
+  --task-color: #FD542E;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  width: 100%;
+  height: 89vh;
+}
+
+/* Navbar Styling  */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+/* Home Styling  */
+.home {
+  display: flex;
+  height: 89vh;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1em;
+  padding-bottom: 4em;
+
+}
+
+.home p {
+  color: #666666;
+}
+
+.home h1{
+  font-size: 2.3rem;
+  margin-bottom: 1em;
+  font-weight: 500;
+}
+
+.home a {
+  text-decoration: none;
+  background-color: var(--task-color);
+  width: 50%;
+  padding: .8em;
+  color: var(--font-color);
+  text-align: center;
+  border-radius: 2em;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Sign up Page Styling  */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+.signup-page, .login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  height: 85vh;
+
+}
+
+.signup, .login {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 1em;
+  border-radius: 1em;
+  justify-content: center;
+}
+
+
+
+.signup h3, .login h3{
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 1em;
+}
+
+
+.signup label, .login label{
+  margin-bottom: .8em;
+
+}
+
+.signup input, .login input {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  padding: .7em;
+  margin-bottom: 1em;
+  border-radius: .5em;
+  border: none;
+
+}
+
+.signup button, .login button{
+  background-color: var(--task-color);
+  color: var(--bg-color);
+  border-radius: 1em;
+  padding: 1em;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  margin-bottom: 1em;
+
+}
+
+
+.signup a, .login a {
+  text-decoration: none;
+  color: var(--task-color);
+}
+
+/* Task page Styling  */
+.task-page{
+  padding: 1em;
+}
+
+.texts{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+.texts p {
+  color: #666666;
+}
+
+.texts h3 {
+  font-size: 1.8rem;
+}
+
+.add-task {
+  display: flex;
+    background-color: #666666;
+    color: var(--font-color);
+    border: none;
+    padding: .5em 1em;
+    border-radius: 2em;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    margin-bottom: 1em;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+}
+
+.add-task span{
+  text-align: center;
+}
+
+.tasks-list {
+  padding-top: 1em; 
+
+}
+
+.task-container {
+  background-color: var(--task-color);
+  padding: 1em;
+  border-radius: 1em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+}
+
+.task-text h1{
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.task-text p {
+  font-weight: 300;
+}
+
+.deadline {
+  font-weight: 300;
+}
+
+.edit-task{
+  
+}
+
+.tags-container {
+  display: flex;
+  gap: 1em;
+}
+
+.tags-container p {
+  border: 1px solid var(--font-color);
+  padding: .5em;
+  font-size: .8rem;
+  border-radius: .5em;
+  text-align: center;
+  font-weight: 300;
+}
+
+.button-div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.mark-as-complete, .edit-task {
+  padding: 1em;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  border: none;
+  border-radius: 1em;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.mark-as-complete {
+  background-color: var(--bg-color);
+}
+
+.edit-task{
+  background-color: var(--grey-accent);
+
+}
