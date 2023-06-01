@@ -11,7 +11,7 @@
   --bg-color: #111111;
   --grey-accent: #444444;
   --font-color: #FDFDFD;
-  --task-color: #FD542E;
+  --task-color: #D65A31;
 }
 
 body {
@@ -170,7 +170,6 @@ select:focus {
 }
 
 .task-container {
-  background-color: var(--task-color);
   padding: 1em;
   border-radius: 1em;
   position: relative;
@@ -178,7 +177,39 @@ select:focus {
   flex-direction: column;
   gap: .5em;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  width: 100%;
+}
 
+.tasks-section{
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+
+}
+
+.priority-medium{
+  background-color: #3D3D3D;
+  color: var(--task-color);
+
+}
+
+
+
+.priority-high{
+  background-color: var(--task-color);
+  color: var(--font-color);
+
+}
+
+.priority-low{
+  background-color: #222D3E;
+  color: var(--task-color);
+}
+
+.task-text{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .task-text h1{
@@ -190,13 +221,24 @@ select:focus {
   font-weight: 300;
 }
 
-.deadline {
+.task-text input{
+  padding: 1em;
+}
+
+
+
+.task-container input, .task-container textarea, .task-container select{
+  padding: .5em;
+  border: none;
+  border-radius: .5em;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+}
+
+.deadline, .priority {
   font-weight: 300;
 }
 
-.edit-task{
-  
-}
 
 .tags-container {
   display: flex;
@@ -204,12 +246,19 @@ select:focus {
 }
 
 .tags-container p {
-  border: 1px solid var(--font-color);
   padding: .5em;
   font-size: .8rem;
   border-radius: .5em;
   text-align: center;
   font-weight: 300;
+  border: 1px solid var(--font-color);
+
+
+}
+
+.priority-tags p {
+  border: 1px solid var(--task-color);
+
 }
 
 .button-div{
@@ -217,7 +266,7 @@ select:focus {
   justify-content: space-between;
 }
 
-.mark-as-complete, .edit-task {
+.mark-as-complete, .edit-task, .delete-task, .save-edit, .filter-form button {
   padding: 1em;
   background-color: var(--bg-color);
   color: var(--font-color);
@@ -228,13 +277,108 @@ select:focus {
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  width: 45%;
 }
 
 .mark-as-complete {
   background-color: var(--bg-color);
+  width: 100%;
 }
 
 .edit-task{
   background-color: var(--grey-accent);
 
 }
+
+.delete-task {
+  background-color: #F73131;
+  
+}
+
+.task-form{
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+  margin-bottom: 2em;
+}
+
+.task-form input {
+  padding: .3em;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+}
+
+.task-form button {
+  margin-top: 1em;
+  padding: .5em;
+  background-color: var(--task-color);
+  border: none;
+  border-radius: 2em;
+  color: var(--font-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.save-edit {
+  background-color: #2CC66D;
+
+}
+
+.material-symbols-outlined {
+  color: white;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5em;
+}
+
+.filter input{
+  width: 70%;
+  padding: .4em;
+  background-color: var(--bg-color);
+  border: 1px solid var(--grey-accent);
+  border-radius: 1em;
+  color: var(--font-color);
+}
+
+.filter .material-symbols-outlined {
+  color: white;
+}
+
+.filter button {
+  background-color: var(--bg-color);
+  border: none;
+  width: 15%;
+
+}
+
+.filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+  justify-content: center;
+}
+
+.filter-form label {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.tags-filter{
+  padding: .4em;
+  border-radius: .5em;
+}
+
+.filter-form button{
+  width: 100%;
+  color: var(--font-color);
+  background-color: var(--grey-accent);
+}
+
+
+

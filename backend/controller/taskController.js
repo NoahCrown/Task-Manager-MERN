@@ -26,12 +26,20 @@ const getTask = async (req, res) => {
 
 // CREATE a new task
 const createTask = async (req, res) => {
-    const {title, description, deadline, completed, priority, tags} = req.body
+    const {title, description, deadline, priority, tags} = req.body
     
     let emptyFields = []
 
     if (!title){
         emptyFields.push('title')
+    }
+
+    if (!priority){
+        emptyFields.push('priority')
+    }
+
+    if (!tags){
+        emptyFields.push('tags')
     }
 
     if (emptyFields.length > 0){
@@ -40,7 +48,7 @@ const createTask = async (req, res) => {
 
     // add doc to db
     try {
-        const task = await Task.create({title, description, deadline, completed, priority, tags})
+        const task = await Task.create({title, description, deadline, priority, tags})
         res.status(200).json(task)
     }catch(error){
         res.status(400).json({error: error.message})

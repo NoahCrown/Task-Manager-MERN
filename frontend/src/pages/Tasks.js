@@ -1,38 +1,114 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import Task from '../components/Task';
+import TaskForm from '../components/TaskForm';
+import TaskFilterForm from '../components/TaskFilterForm';
+import { useTasksContext } from '../hooks/useTaskContext';
 
 const Tasks = () => {
+  const [showForm, setShowForm] = useState(false);
+  const { tasks, dispatch } = useTasksContext();
+  const [filter, setFilter] = useState('');
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [showFilterForm, setShowFilterForm] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    sortByDeadline: false,
+    sortByPriority: false,
+    sortByTags: false,
+    tags: '',
+  });
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch('/api/task');
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: 'SET_TASKS', payload: json });
+      }
+    };
+
+    fetchTasks();
+  }, [dispatch]);
+
+  const handleAddTask = () => {
+    setShowForm((prev) => !prev);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const filtered = tasks.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()));
+    setFilteredTasks(filtered);
+  };
+
+  const handleFilter = (e) => {
+    e.preventDefault();
+    setShowFilterForm(prev => !prev);
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    // Perform the filtering based on selected options
+    let filtered = tasks;
+    if (filterOptions.sortByDeadline) {
+      filtered = filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+    }
+    if (filterOptions.sortByPriority) {
+      filtered = filtered.sort((a, b) => a.priority.localeCompare(b.priority));
+    }
+    if (filterOptions.sortByTags) {
+      const enteredTags = filterOptions.tags.split(',').map((tag) => tag.trim());
+      filtered = filtered.filter((task) =>
+        enteredTags.some((enteredTag) => task.tags.includes(enteredTag))
+      );
+    }
+    setFilteredTasks(filtered);
+    setShowFilterForm(false);
+  };
+
   return (
-    <main className='task-page'>
-      <div className='texts'>
+    <main className="task-page">
+      <div className="texts">
         <p>Hello Noah,</p>
         <h3>Embrace the power of action, for in doing lies the key to achievement.</h3>
       </div>
-      <div className='tasks-list'>
-      <button className='add-task'>Add new task <span class="material-symbols-outlined">add_circle</span> </button>
-        <div className='task-container'>
-          <div className='task-text'>
-            <h1>LMS Project</h1>
-            <p>Create a Task Manager App using MERN stack and JWT</p>
-          </div>
-          <p className='deadline'>Deadline: September 12, 2001</p>
-          <div className='tags-container'>
-            <p>School</p>
-            <p>Programming</p>
-          </div>
-          <div className='button-div'>
-          <button className='mark-as-complete'>Mark as complete <span class="material-symbols-outlined">check_circle</span></button>
-          <button className='edit-task'>Edit Task<span class="material-symbols-outlined">edit_note</span></button>
-
-          </div>
-          
-
-
+      <div className="tasks-list">
+        <div className="filter-section">
+          <form className="filter">
+            <input type="text" name="filter-title" value={filter} onChange={(e) => setFilter(e.target.value)} />
+            <button onClick={handleSearch}>
+              <span className="material-symbols-outlined">search</span>
+            </button>
+            <button onClick={handleFilter}>
+              <span className="material-symbols-outlined">filter_alt</span>
+            </button>
+          </form>
+          <button onClick={handleAddTask} className="add-task">
+            Add new task <span className="material-symbols-outlined">{!showForm ? 'add_circle' : 'cancel'}</span>
+          </button>
         </div>
-
+        {showForm && <TaskForm />}
+        <div className="tasks-section">
+          {showFilterForm ? (
+            <TaskFilterForm
+              filterOptions={filterOptions}
+              setFilterOptions={setFilterOptions}
+              handleFilterSubmit={handleFilterSubmit}
+            />
+          ) : (
+            <>
+              {filteredTasks.length > 0 ? (
+                filteredTasks.map((task) => <Task key={task._id} task={task} />)
+              ) : tasks ? (
+                tasks.map((task) => <Task key={task._id} task={task} />)
+              ) : (
+                <p>No tasks found.</p>
+              )}
+            </>
+          )}
+        </div>
       </div>
-      
     </main>
-  )
-}
+  );
+};
 
-export default Tasks
+export default Tasks;
