@@ -21,6 +21,10 @@ body {
   height: 89vh;
 }
 
+a, button{
+  cursor: pointer;
+}
+
 /* Navbar Styling  */
 nav {
   display: flex;
@@ -34,7 +38,8 @@ nav {
   display: flex;
   height: 89vh;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content:center;
+  align-items: center;
   padding: 1em;
   padding-bottom: 4em;
 
@@ -42,9 +47,10 @@ nav {
 
 .home p {
   color: #666666;
+  text-align: left;
 }
 
-.home h1{
+.home h1 {
   font-size: 2.3rem;
   margin-bottom: 1em;
   font-weight: 500;
@@ -53,7 +59,7 @@ nav {
 .home a {
   text-decoration: none;
   background-color: var(--task-color);
-  width: 50%;
+  width: 60%;
   padding: .8em;
   color: var(--font-color);
   text-align: center;
@@ -69,7 +75,8 @@ select:focus {
   outline: none;
 }
 
-.signup-page, .login-page {
+.signup-page,
+.login-page {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +85,8 @@ select:focus {
 
 }
 
-.signup, .login {
+.signup,
+.login {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -89,19 +97,22 @@ select:focus {
 
 
 
-.signup h3, .login h3{
+.signup h3,
+.login h3 {
   text-align: center;
   font-weight: 500;
   margin-bottom: 1em;
 }
 
 
-.signup label, .login label{
+.signup label,
+.login label {
   margin-bottom: .8em;
 
 }
 
-.signup input, .login input {
+.signup input,
+.login input {
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   padding: .7em;
   margin-bottom: 1em;
@@ -110,7 +121,8 @@ select:focus {
 
 }
 
-.signup button, .login button{
+.signup button,
+.login button {
   background-color: var(--task-color);
   color: var(--bg-color);
   border-radius: 1em;
@@ -122,22 +134,24 @@ select:focus {
 }
 
 
-.signup a, .login a {
+.signup a,
+.login a {
   text-decoration: none;
   color: var(--task-color);
 }
 
 /* Task page Styling  */
-.task-page{
+.task-page {
   padding: 1em;
 }
 
-.texts{
+.texts {
   width: 100%;
   display: flex;
   flex-direction: column;
 
 }
+
 .texts p {
   color: #666666;
 }
@@ -148,31 +162,30 @@ select:focus {
 
 .add-task {
   display: flex;
-    background-color: #666666;
-    color: var(--font-color);
-    border: none;
-    padding: .5em 1em;
-    border-radius: 2em;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    margin-bottom: 1em;
-    align-items: center;
-    justify-content: center;
-    gap: .5em;
+  background-color: #666666;
+  color: var(--font-color);
+  border: none;
+  padding: .5em 1em;
+  border-radius: 2em;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  margin-bottom: 1em;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
 }
 
-.add-task span{
+.add-task span {
   text-align: center;
 }
 
 .tasks-list {
-  padding-top: 1em; 
+  padding-top: 1em;
 
 }
 
 .task-container {
   padding: 1em;
   border-radius: 1em;
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: .5em;
@@ -180,14 +193,14 @@ select:focus {
   width: 100%;
 }
 
-.tasks-section{
+.tasks-section {
   display: flex;
   gap: 1em;
   flex-direction: column;
 
 }
 
-.priority-medium{
+.priority-medium {
   background-color: #3D3D3D;
   color: var(--task-color);
 
@@ -195,24 +208,24 @@ select:focus {
 
 
 
-.priority-high{
+.priority-high {
   background-color: var(--task-color);
   color: var(--font-color);
 
 }
 
-.priority-low{
+.priority-low {
   background-color: #222D3E;
   color: var(--task-color);
 }
 
-.task-text{
+.task-text {
   display: flex;
   flex-direction: column;
   gap: 1em;
 }
 
-.task-text h1{
+.task-text h1 {
   font-size: 1.8rem;
   font-weight: 400;
 }
@@ -221,13 +234,15 @@ select:focus {
   font-weight: 300;
 }
 
-.task-text input{
+.task-text input {
   padding: 1em;
 }
 
 
 
-.task-container input, .task-container textarea, .task-container select{
+.task-container input,
+.task-container textarea,
+.task-container select {
   padding: .5em;
   border: none;
   border-radius: .5em;
@@ -235,7 +250,8 @@ select:focus {
 
 }
 
-.deadline, .priority {
+.deadline,
+.priority {
   font-weight: 300;
 }
 
@@ -261,13 +277,17 @@ select:focus {
 
 }
 
-.button-div{
+.button-div {
   display: flex;
   justify-content: space-between;
 }
 
-.mark-as-complete, .edit-task, .delete-task, .save-edit, .filter-form button {
-  padding: 1em;
+.mark-as-complete,
+.edit-task,
+.delete-task,
+.save-edit,
+.filter-form button {
+  padding: .5em;
   background-color: var(--bg-color);
   color: var(--font-color);
   border: none;
@@ -276,8 +296,28 @@ select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
+  gap: 0.3em;
   width: 45%;
+}
+
+.logout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+nav div {
+  width: 50%;
+}
+
+.user-sign {
+  display: flex;
+  height: fit-content;
+  font-size: .9rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .mark-as-complete {
@@ -285,17 +325,17 @@ select:focus {
   width: 100%;
 }
 
-.edit-task{
+.edit-task {
   background-color: var(--grey-accent);
 
 }
 
 .delete-task {
   background-color: #F73131;
-  
+
 }
 
-.task-form{
+.task-form {
   display: flex;
   flex-direction: column;
   gap: .5em;
@@ -336,7 +376,7 @@ select:focus {
   margin-bottom: 1.5em;
 }
 
-.filter input{
+.filter input {
   width: 70%;
   padding: .4em;
   background-color: var(--bg-color);
@@ -348,6 +388,7 @@ select:focus {
 .filter .material-symbols-outlined {
   color: white;
 }
+
 
 .filter button {
   background-color: var(--bg-color);
@@ -369,16 +410,188 @@ select:focus {
   gap: 1em;
 }
 
-.tags-filter{
+.tags-filter {
   padding: .4em;
   border-radius: .5em;
 }
 
-.filter-form button{
+.filter-form button {
   width: 100%;
   color: var(--font-color);
   background-color: var(--grey-accent);
 }
 
+.error {
+  color: red;
+}
+
+header a {
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav div button {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  border: none;
+}
+
+.logout button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5em;
+}
+
+@media only screen and (min-width:378px) and (max-width: 762px) {
+  nav {
+    padding: 1em;
+  }
+
+  nav div {
+    width: 30%;
+  }
+
+  .tasks-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .task-container{
+    width: 100%;
+  }
+
+  .task-form {
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 1.5em;
+  }
+
+  .filter button {
+    width: 5%;
+  }
+}
 
 
+
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  nav div {
+    width: 20%;
+  }
+
+  .home a {
+    width: 40%;
+  }
+
+  .home h1 {
+    width: 70%;
+  }
+
+  .signup,
+  .login {
+    width: 50%;
+  }
+
+  .tasks-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .filter button {
+    width: 5%;
+  }
+
+  .task-form {
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 1.5em;
+  }
+
+
+  /* CSS rules for tablets and small screens */
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  nav div {
+    width: 20%;
+  }
+
+  .home a {
+    width: 35%;
+  }
+
+  .home h1 {
+    width: 70%;
+  }
+
+  .signup,
+  .login {
+    width: 50%;
+  }
+
+  .tasks-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .filter button {
+    width: 3%;
+  }
+
+  .task-form {
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 1.5em;
+  }
+}
+
+@media (min-width: 1200px) {
+  nav div {
+    width: 20%;
+  }
+
+  .home a {
+    width: 35%;
+  }
+
+  .home h1 {
+    width: 70%;
+  }
+
+  .signup,
+  .login {
+    width: 30%;
+  }
+
+  .tasks-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  .filter button {
+    width: 3%;
+  }
+
+
+  .task-form {
+    width: 40%;
+    margin: 0 auto;
+    margin-bottom: 1.5em;
+  }
+
+  .filter input {
+    width: 40%;
+  }
+}
+
+/* CSS rules for desktops and larger screens */

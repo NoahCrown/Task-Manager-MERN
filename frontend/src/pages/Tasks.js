@@ -3,10 +3,12 @@ import Task from '../components/Task';
 import TaskForm from '../components/TaskForm';
 import TaskFilterForm from '../components/TaskFilterForm';
 import { useTasksContext } from '../hooks/useTaskContext';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Tasks = () => {
   const [showForm, setShowForm] = useState(false);
-  const { tasks, dispatch } = useTasksContext();
   const [filter, setFilter] = useState('');
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [showFilterForm, setShowFilterForm] = useState(false);
@@ -14,12 +16,20 @@ const Tasks = () => {
     sortByDeadline: false,
     sortByPriority: false,
     sortByTags: false,
+    sortByCompleted: false,
     tags: '',
+    sortAlphabeticalOrder: '',
   });
+  const { user } = useAuthContext();
+  const { tasks, dispatch } = useTasksContext();
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch('/api/task');
+      const response = await fetch('/api/task', {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
       const json = await response.json();
 
       if (response.ok) {
@@ -27,8 +37,19 @@ const Tasks = () => {
       }
     };
 
-    fetchTasks();
-  }, [dispatch]);
+    if (user) {
+      fetchTasks();
+    }
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    if (tasks) {
+      const filtered = tasks.filter((task) =>
+        task.title.toLowerCase().includes(filter.toLowerCase())
+      );
+      setFilteredTasks(filtered);
+    }
+  }, [tasks, filter]);
 
   const handleAddTask = () => {
     setShowForm((prev) => !prev);
@@ -36,19 +57,23 @@ const Tasks = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const filtered = tasks.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()));
-    setFilteredTasks(filtered);
+    if (tasks) {
+      const filtered = tasks.filter((task) =>
+        task.title.toLowerCase().includes(filter.toLowerCase())
+      );
+      setFilteredTasks(filtered);
+    }
   };
 
   const handleFilter = (e) => {
     e.preventDefault();
-    setShowFilterForm(prev => !prev);
+    setShowFilterForm((prev) => !prev);
   };
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    // Perform the filtering based on selected options
     let filtered = tasks;
+
     if (filterOptions.sortByDeadline) {
       filtered = filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
     }
@@ -56,11 +81,21 @@ const Tasks = () => {
       filtered = filtered.sort((a, b) => a.priority.localeCompare(b.priority));
     }
     if (filterOptions.sortByTags) {
-      const enteredTags = filterOptions.tags.split(',').map((tag) => tag.trim());
+      const enteredTags = filterOptions.tags.split(',').map((tag) => tag.trim().toLowerCase());
       filtered = filtered.filter((task) =>
-        enteredTags.some((enteredTag) => task.tags.includes(enteredTag))
+        enteredTags.some((enteredTag) => task.tags.some((tag) => tag.toLowerCase() === enteredTag))
       );
     }
+    if (filterOptions.sortByCompleted) {
+      filtered = filtered.filter((task) => !task.completed);
+    }
+
+    if (filterOptions.sortAlphabeticalOrder === 'asc') {
+      filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (filterOptions.sortAlphabeticalOrder === 'desc') {
+      filtered = filtered.sort((a, b) => b.title.localeCompare(a.title));
+    }
+
     setFilteredTasks(filtered);
     setShowFilterForm(false);
   };
@@ -68,13 +103,18 @@ const Tasks = () => {
   return (
     <main className="task-page">
       <div className="texts">
-        <p>Hello Noah,</p>
+        <p>Hello {user.username},</p>
         <h3>Embrace the power of action, for in doing lies the key to achievement.</h3>
       </div>
       <div className="tasks-list">
         <div className="filter-section">
           <form className="filter">
-            <input type="text" name="filter-title" value={filter} onChange={(e) => setFilter(e.target.value)} />
+            <input
+              type="text"
+              name="filter-title"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
             <button onClick={handleSearch}>
               <span className="material-symbols-outlined">search</span>
             </button>
@@ -83,7 +123,10 @@ const Tasks = () => {
             </button>
           </form>
           <button onClick={handleAddTask} className="add-task">
-            Add new task <span className="material-symbols-outlined">{!showForm ? 'add_circle' : 'cancel'}</span>
+            Add new task{' '}
+            <span className="material-symbols-outlined">
+              {!showForm ? 'add_circle' : 'cancel'}
+            </span>
           </button>
         </div>
         {showForm && <TaskForm />}
@@ -107,6 +150,7 @@ const Tasks = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 };

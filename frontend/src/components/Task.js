@@ -1,29 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTasksContext } from "../hooks/useTaskContext";
-import { useState, useEffect } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Task = ({ task }) => {
-  const {dispatch } = useTasksContext();
+  const { dispatch } = useTasksContext();
+  const { user } = useAuthContext();
   const [editing, setEditing] = useState(false);
   const [updatedTask, setUpdatedTask] = useState(task);
-  const { title, description, priority, deadline, tags } = updatedTask;
+  const {title, description, deadline, priority, tags } = updatedTask
 
+  const fetchTask = async () => {
+    try {
+      const response = await fetch(`/api/task/${task._id}`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`,
+        },
+      });
+
+
+      if (response.ok) {
+        const updatedTaskData = await response.json();
+        setUpdatedTask(updatedTaskData);
+      } else {
+        throw new Error("Failed to fetch updated task data");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleMarkComplete = async (task) => {
     try {
-      const updatedTask = { ...task, completed: !task.completed }; // Toggle the opposite of the current 'completed' value
-
+      const updatedTask = { ...task, completed: !task.completed };
       const response = await fetch(`/api/task/${task._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify(updatedTask), // Send the updatedTask object as the body
+        body: JSON.stringify(updatedTask),
       });
 
       if (response.ok) {
         dispatch({ type: "UPDATE_TASK", payload: updatedTask });
+        toast.success("Task successfully marked as done");
       } else {
+        toast.error("Failed to update task completion status");
         throw new Error("Failed to update task completion status");
       }
     } catch (error) {
@@ -32,56 +56,72 @@ const Task = ({ task }) => {
   };
 
   const handleDeleteTask = async (task) => {
+    if (!user) {
+      return;
+    }
     try {
-      // Send a DELETE request to remove the task from the database
       const response = await fetch(`/api/task/${task._id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
       });
 
-      console.log(response);
-      // Remove the task from the context state
       dispatch({ type: "DELETE_TASK", payload: task });
+      toast.success("Task deleted successfully");
     } catch (error) {
+      toast.error(error);
       console.error(error);
     }
   };
 
   const handleEditTask = () => {
+    if (!user) {
+      return;
+    }
     setEditing(true);
   };
 
   const handleSaveTask = async () => {
+    if (!user) {
+      return;
+    }
     try {
-      const parsedDeadline = new Date(updatedTask.deadline); // Parse the deadline value
+      const parsedDeadline = new Date(updatedTask.deadline);
       const updatedTaskWithParsedDeadline = { ...updatedTask, deadline: parsedDeadline };
-  
       const response = await fetch(`/api/task/${task._id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify(updatedTaskWithParsedDeadline),
       });
-  
+
       if (response.ok) {
-        const updatedTaskData = await response.json();
-        dispatch({ type: 'UPDATE_TASK', payload: updatedTaskData });
+        await fetchTask(); // Refetch the task data
         setEditing(false);
+        toast.success("Task edited successfully");
       } else {
-        throw new Error('Failed to update task');
+        toast.error("Failed to update task, try again later");
+        throw new Error("Failed to update task");
       }
     } catch (error) {
       console.error(error);
     }
   };
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'deadline') {
-      const formattedDate = new Date(value).toISOString().split('T')[0];
+    if (name === 'tags') {
+      // Split the comma-separated tags into an array
+      const tagsArray = value.split(',');
+      // Remove leading and trailing whitespace from each tag
+      const trimmedTagsArray = tagsArray.map((tag) => tag.trim());
       setUpdatedTask((prevTask) => ({
         ...prevTask,
-        [name]: formattedDate,
+        [name]: trimmedTagsArray,
       }));
     } else {
       setUpdatedTask((prevTask) => ({
@@ -90,7 +130,7 @@ const Task = ({ task }) => {
       }));
     }
   };
-  
+
   const getPriorityColorClass = (priority) => {
     switch (priority) {
       case "low":
@@ -104,9 +144,7 @@ const Task = ({ task }) => {
     }
   };
 
-  const taskContainerClasses = `task-container ${getPriorityColorClass(
-    task.priority
-  )}`;
+  const taskContainerClasses = `task-container ${getPriorityColorClass(task.priority)}`;
 
   const deadlineDate = new Date(task.deadline);
   const formattedDate = deadlineDate.toLocaleDateString("en-US", {
@@ -117,7 +155,7 @@ const Task = ({ task }) => {
 
   return (
     <div className={taskContainerClasses}>
-      <div className="task-text ">
+      <div className="task-text">
         {editing ? (
           <>
             <input
@@ -138,8 +176,8 @@ const Task = ({ task }) => {
           </>
         ) : (
           <>
-            <h1>{task.title}</h1>
-            <p>{task.description}</p>
+            <h1>{title}</h1>
+            <p>{description}</p>
           </>
         )}
       </div>
@@ -177,16 +215,16 @@ const Task = ({ task }) => {
         </>
       ) : (
         <>
-          <p className="priority">Priority: {task.priority} </p>
+          <p className="priority">Priority: {priority}</p>
           <p className="deadline">Deadline: {formattedDate}</p>
           <div
             className={
-              getPriorityColorClass(task.priority) === "priority-high"
+              getPriorityColorClass(priority) === "priority-high"
                 ? "tags-container"
                 : "tags-container priority-tags"
             }
           >
-            {task.tags.map((tag) => (
+            {tags.map((tag) => (
               <p key={tag}>{tag}</p>
             ))}
           </div>
@@ -195,20 +233,21 @@ const Task = ({ task }) => {
 
       <div className="button-div">
         {editing ? (
-          <button className="save-edit" onClick={handleSaveTask}>Save Task <span class="material-symbols-outlined">
-add_task
-</span></button>
+          <button className="save-edit" onClick={handleSaveTask}>
+            Save Task <span className="material-symbols-outlined">add_task</span>
+          </button>
         ) : (
           <button onClick={handleEditTask} className="edit-task">
-            Edit Task
+            Edit
             <span className="material-symbols-outlined">edit_note</span>
           </button>
         )}
 
         <button className="delete-task" onClick={() => handleDeleteTask(task)}>
-          Delete task <span class="material-symbols-outlined">delete</span>
+          Delete <span className="material-symbols-outlined">delete</span>
         </button>
       </div>
+
       <button
         onClick={() => handleMarkComplete(task)}
         className="mark-as-complete"
@@ -216,6 +255,7 @@ add_task
         {task.completed ? "Completed" : "Mark as complete"}{" "}
         <span className="material-symbols-outlined">check_circle</span>
       </button>
+      <ToastContainer />
     </div>
   );
 };

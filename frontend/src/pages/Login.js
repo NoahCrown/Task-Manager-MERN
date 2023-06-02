@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useLogin } from '../hooks/useLogin'
+import { ToastContainer } from 'react-toastify';
+
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const {login, isLoading, error} = useLogin()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
+
+    await login(username, password)
   }
 
   return (
@@ -30,16 +36,19 @@ const Login = () => {
         value={password}
       />
 
-      <button>Login</button>
+      <button disabled={isLoading}>Login</button>
+      {error && <div className='error'>{error}</div>}
 
       <p>Are you a new user? <Link to='/signup'>Sign up</Link></p>
 
 
 
     </form>
+    <ToastContainer/>
 
-
+    
     </div>
+
     
   )
 }

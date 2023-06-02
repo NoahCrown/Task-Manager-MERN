@@ -44,7 +44,7 @@ const TaskFilterForm = ({ filterOptions, setFilterOptions, handleFilterSubmit })
         {filterOptions.sortByTags && (
           <input
             type="text"
-            className='tags-filter'
+            className="tags-filter"
             value={filterOptions.tags}
             onChange={(e) =>
               setFilterOptions((prevOptions) => ({
@@ -54,6 +54,35 @@ const TaskFilterForm = ({ filterOptions, setFilterOptions, handleFilterSubmit })
             }
           />
         )}
+      </label>
+      <label>
+        Filter by Pending Activities:
+        <input
+          type="checkbox"
+          checked={filterOptions.sortByCompleted}
+          onChange={(e) =>
+            setFilterOptions((prevOptions) => ({
+              ...prevOptions,
+              sortByCompleted: e.target.checked,
+            }))
+          }
+        />
+      </label>
+      <label>
+        Sort by Alphabetical Order:
+        <select
+          value={filterOptions.sortAlphabeticalOrder}
+          onChange={(e) =>
+            setFilterOptions((prevOptions) => ({
+              ...prevOptions,
+              sortAlphabeticalOrder: e.target.value,
+            }))
+          }
+        >
+          <option value="">No Sorting</option>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
       </label>
       <button type="submit">Apply Filters</button>
     </form>

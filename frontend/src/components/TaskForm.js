@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useTasksContext } from '../hooks/useTaskContext';
+import { useAuthContext } from '../hooks/useAuthContext'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TaskForm = () => {
   const [title, setTitle] = useState('');
@@ -7,10 +10,12 @@ const TaskForm = () => {
   const [deadline, setDeadline] = useState('');
   const [priority, setPriority] = useState('medium');
   const [tags, setTags] = useState('');
-  const [error, setError] = useState(null)
-  const [emptyFields, setEmptyFields] = useState([])
+  const [error, setError] = useState(null);
+  const [emptyFields, setEmptyFields] = useState([]);
+  const { user } = useAuthContext();
 
-  const {dispatch} = useTasksContext()
+  const { dispatch } = useTasksContext();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -23,34 +28,33 @@ const TaskForm = () => {
     };
 
     const response = await fetch('/api/task', {
-        method: 'POST',
-        body: JSON.stringify(newTask),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+      method: 'POST',
+      body: JSON.stringify(newTask),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    });
 
-    console.log(response)
-    const json = await response.json()
+    const json = await response.json();
+    toast.success('Task added successfully')
 
     if (!response.ok) {
-        setError(json.error)
-        setEmptyFields(json.emptyFields)
-    }
-
-    if (response.ok) {
-        setError(null);
-        setTitle('')
-        setDescription('')
-        setPriority('medium')
-        setTags('')
-        setEmptyFields([])
-        dispatch({type: "CREATE_TASK", payload: json})
+      setError(json.error);
+      setEmptyFields(json.emptyFields);
+    } else {
+      setError(null);
+      setTitle('');
+      setDescription('');
+      setPriority('medium');
+      setTags('');
+      setEmptyFields([]);
+      dispatch({ type: 'CREATE_TASK', payload: json });
     }
   };
 
   return (
-    <form  onSubmit={handleSubmit} className='task-form'>
+    <form onSubmit={handleSubmit} className='task-form'>
       <label htmlFor="title">Title:</label>
       <input
         type="text"
@@ -93,14 +97,12 @@ const TaskForm = () => {
         type="text"
         id="tags"
         value={tags}
-        onChange={(e) => setTags(e.target.value)}
+        onChange={(e) => setTags(e.target.value.toLowerCase())}
         required
       />
 
-      <button type="submit">Add Task <span class="material-symbols-outlined">
-add_notes
-</span></button>
-  {error && <div className='form-error'>{error}</div>}
+      <button type="submit">Add Task <span class="material-symbols-outlined">add_notes</span></button>
+      {error && <div className='error'>{error}</div>}
     </form>
   );
 };

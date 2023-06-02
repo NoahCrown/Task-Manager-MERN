@@ -5,22 +5,29 @@ import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import { useAuthContext } from './hooks/useAuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function App() {
+  const {user} = useAuthContext()
   return (
     <div className="App">
+
+
       <BrowserRouter>
         <Navbar/>
           <div className='pages'>
             <Routes>
-              <Route path='/' element={<Home/>}/>
-              <Route path='/tasks' element={<Tasks/>}/>
-              <Route path='/login' element={<Login/>}/>
-              <Route path='/signup' element={<Signup/>}/>
+              <Route path='/' element={ <Home/>}/>
+              <Route path='/tasks' element={user ? <Tasks/> : <Navigate to='/login'/>}/>
+              <Route path='/login' element={!user ? <Login/> : <Navigate to='/tasks'/>}/>
+              <Route path='/signup' element={!user ? <Signup/>: <Navigate to='/tasks'/>}/>
             </Routes>
-
           </div>
       </BrowserRouter>
+      <ToastContainer/>
+
       
     </div>
   );
