@@ -52,6 +52,9 @@ To run the Opulent Task app on your local machine, follow these steps:
 6. Open your web browser and visit http://localhost:3000 to access the Opulent Task app.
 7. Swagger Dosc is available in http://localhost:4000/api-docs
 
+Note: When trying to use the routes in swagger. Please provide a bearer authentication token. You will get this in the console log once you signed up or login.
+Or a easier method would be trying to sign up in postman to get a json consisting of a json with a username and token.
+
  
 ## Project Structure
 The project structure follows a standard MERN stack architecture:
