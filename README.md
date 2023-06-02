@@ -21,28 +21,29 @@ Before running the application, make sure you have the following prerequisites i
 To run the Opulent Task app on your local machine, follow these steps:
 
 1. Clone the repository:
-   git clone https://github.com/NoahCron/Task-Manager-MERN.git
+  `` git clone https://github.com/NoahCron/Task-Manager-MERN.git ``
    
 2. Navigate to the project dir
-   cd Task-Manager-MERN
+``   cd Task-Manager-MERN ``
    
 3. Install the dependencies for both the frontend and backend
 
-   cd frontend
+``   cd frontend
    npm install
    
    cd backend
-   npm install
+   npm install ``
    
 4. Setup your env variables. 
-   MONGODB_URI=<your-mongodb-uri>
-   JWT_SECRET=<your-jwt-secret> 
+``   MONGODB_URI=<your-mongodb-uri>
+   JWT_SECRET=<your-jwt-secret> ``
  
 5. Start the servers
    
   ``  a. Backend
      cd backend
      npm run dev
+     
     b. Frontend
      cd frontend
      npm start ``
