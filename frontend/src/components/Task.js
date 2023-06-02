@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTasksContext } from "../hooks/useTaskContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { ToastContainer, toast } from "react-toastify";
@@ -68,7 +68,9 @@ const Task = ({ task }) => {
         },
       });
 
-      dispatch({ type: "DELETE_TASK", payload: task });
+      const json = await response.json()
+
+      dispatch({ type: "DELETE_TASK", payload: json });
       toast.success("Task deleted successfully");
     } catch (error) {
       toast.error(error);

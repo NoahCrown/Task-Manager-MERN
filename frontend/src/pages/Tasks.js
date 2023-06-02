@@ -4,7 +4,7 @@ import TaskForm from '../components/TaskForm';
 import TaskFilterForm from '../components/TaskFilterForm';
 import { useTasksContext } from '../hooks/useTaskContext';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Tasks = () => {

@@ -6,7 +6,6 @@ import Tasks from './pages/Tasks';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { useAuthContext } from './hooks/useAuthContext';
-import { ToastContainer, toast } from 'react-toastify';
 
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
             </Routes>
           </div>
       </BrowserRouter>
-      <ToastContainer/>
 
       
     </div>
