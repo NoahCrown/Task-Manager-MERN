@@ -29,9 +29,9 @@ To run the Opulent Task app on your local machine, follow these steps:
 3. Install the dependencies for both the frontend and backend
 
 ``   cd frontend
-   npm install
+   npm install ``
    
-   cd backend
+``   cd backend
    npm install ``
    
 4. Setup your env variables. 
@@ -42,11 +42,12 @@ To run the Opulent Task app on your local machine, follow these steps:
    
   ``  a. Backend
      cd backend
-     npm run dev
+     npm run dev ``
+    
      
-    b. Frontend
+``    b. Frontend
      cd frontend
-     npm start ``
+     npm start  ``
    
 6. Open your web browser and visit http://localhost:3000 to access the Opulent Task app.
 7. Swagger Dosc is available in http://localhost:4000/api-docs
