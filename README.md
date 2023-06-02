@@ -27,22 +27,26 @@ To run the Opulent Task app on your local machine, follow these steps:
    cd Task-Manager-MERN
    
 3. Install the dependencies for both the frontend and backend
+
    cd frontend
    npm install
    
    cd backend
    npm install
+   
 4. Setup your env variables. 
    MONGODB_URI=<your-mongodb-uri>
    JWT_SECRET=<your-jwt-secret> 
  
 5. Start the servers
-    a. Backend
+   
+  ``  a. Backend
      cd backend
      npm run dev
     b. Frontend
      cd frontend
-     npm start
+     npm start ``
+   
 6. Open your web browser and visit http://localhost:3000 to access the Opulent Task app.
 7. Swagger Dosc is available in http://localhost:4000/api-docs
 
