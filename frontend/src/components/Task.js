@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTaskContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,25 +11,32 @@ const Task = ({ task }) => {
   const [updatedTask, setUpdatedTask] = useState(task);
   const {title, description, deadline, priority, tags } = updatedTask
 
-  const fetchTask = async () => {
-    try {
-      const response = await fetch(`/api/task/${task._id}`, {
-        headers: {
-          'Authorization': `Bearer ${user.token}`,
-        },
-      });
-
-
-      if (response.ok) {
-        const updatedTaskData = await response.json();
-        setUpdatedTask(updatedTaskData);
-      } else {
-        throw new Error("Failed to fetch updated task data");
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const response = await fetch(`/api/task/${task._id}`, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`,
+          },
+        });
+  
+  
+        if (response.ok) {
+          const updatedTaskData = await response.json();
+          setUpdatedTask(updatedTaskData);
+        } else {
+          throw new Error("Failed to fetch updated task data");
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    };
+
+    fetchTask()
+
+  }, [updatedTask, task._id, user])
+
+  
 
   const handleMarkComplete = async (task) => {
     try {
@@ -45,7 +52,7 @@ const Task = ({ task }) => {
 
       if (response.ok) {
         dispatch({ type: "UPDATE_TASK", payload: updatedTask });
-        toast.success("Task successfully marked as done");
+        toast.success("Task state successfully changed");
       } else {
         toast.error("Failed to update task completion status");
         throw new Error("Failed to update task completion status");
@@ -96,15 +103,15 @@ const Task = ({ task }) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          'Authorization': `Bearer ${user.token}`,
         },
         body: JSON.stringify(updatedTaskWithParsedDeadline),
       });
 
       if (response.ok) {
-        await fetchTask(); // Refetch the task data
         setEditing(false);
         toast.success("Task edited successfully");
+        dispatch({type: "UPDATE_TASK", payload: updatedTaskWithParsedDeadline})
       } else {
         toast.error("Failed to update task, try again later");
         throw new Error("Failed to update task");
@@ -114,24 +121,26 @@ const Task = ({ task }) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'tags') {
-      // Split the comma-separated tags into an array
-      const tagsArray = value.split(',');
-      // Remove leading and trailing whitespace from each tag
-      const trimmedTagsArray = tagsArray.map((tag) => tag.trim());
-      setUpdatedTask((prevTask) => ({
-        ...prevTask,
-        [name]: trimmedTagsArray,
-      }));
-    } else {
-      setUpdatedTask((prevTask) => ({
-        ...prevTask,
-        [name]: value,
-      }));
-    }
-  };
+  
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  if (name === 'tags') {
+    // Split the comma-separated tags into an array
+    const tagsArray = value.split(',');
+    // Remove leading and trailing whitespace from each tag
+    const trimmedTagsArray = tagsArray.map((tag) => tag.trim());
+    setUpdatedTask((prevTask) => ({
+      ...prevTask,
+      [name]: trimmedTagsArray,
+    }));
+  } else {
+    setUpdatedTask((prevTask) => ({
+      ...prevTask,
+      [name]: value,
+    }));
+  }
+};
+
 
   const getPriorityColorClass = (priority) => {
     switch (priority) {
@@ -146,7 +155,7 @@ const Task = ({ task }) => {
     }
   };
 
-  const taskContainerClasses = `task-container ${getPriorityColorClass(task.priority)}`;
+  let taskContainerClasses = `task-container ${getPriorityColorClass(updatedTask.priority)}`;
 
   const deadlineDate = new Date(task.deadline);
   const formattedDate = deadlineDate.toLocaleDateString("en-US", {

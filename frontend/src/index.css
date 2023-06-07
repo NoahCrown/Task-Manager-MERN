@@ -45,13 +45,13 @@ nav {
 
 }
 
+
 .home p {
   color: #666666;
-  text-align: left;
 }
 
 .home h1 {
-  font-size: 2.3rem;
+  font-size: 2.5rem;
   margin-bottom: 1em;
   font-weight: 500;
 }
@@ -566,6 +566,7 @@ nav div button {
 
   .home h1 {
     width: 70%;
+    text-align: center;
   }
 
   .signup,

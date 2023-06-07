@@ -24,6 +24,7 @@ const Login = () => {
       <input
         type='text'
         required
+        min='5'
         onChange={(e) => setUsername(e.target.value)}
         value={username}
       />
@@ -34,6 +35,7 @@ const Login = () => {
         required
         onChange={(e) => setPassword(e.target.value)}
         value={password}
+        min='8'
       />
 
       <button disabled={isLoading}>Login</button>

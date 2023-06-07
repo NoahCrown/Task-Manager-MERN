@@ -15,7 +15,7 @@ const Navbar = () => {
     <header>
       <nav>
         <Link to="/">
-          <h1>OpulentTask</h1>
+          <h1>ToucanTask</h1>
         </Link>
         <div>
           {user ? (

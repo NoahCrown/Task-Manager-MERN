@@ -1,6 +1,7 @@
 import React from 'react';
 
 const TaskFilterForm = ({ filterOptions, setFilterOptions, handleFilterSubmit }) => {
+  
   return (
     <form className="filter-form" onSubmit={handleFilterSubmit}>
       <label>

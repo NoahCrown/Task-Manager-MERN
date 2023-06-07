@@ -40,16 +40,8 @@ const Tasks = () => {
     if (user) {
       fetchTasks();
     }
-  }, [dispatch, user]);
+  }, [dispatch, user,filteredTasks ]);
 
-  useEffect(() => {
-    if (tasks) {
-      const filtered = tasks.filter((task) =>
-        task.title.toLowerCase().includes(filter.toLowerCase())
-      );
-      setFilteredTasks(filtered);
-    }
-  }, [tasks, filter]);
 
   const handleAddTask = () => {
     setShowForm((prev) => !prev);
@@ -72,33 +64,44 @@ const Tasks = () => {
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    let filtered = tasks;
-
+  
+    let filtered = [...tasks];
+  
     if (filterOptions.sortByDeadline) {
-      filtered = filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+      filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
     }
     if (filterOptions.sortByPriority) {
-      filtered = filtered.sort((a, b) => a.priority.localeCompare(b.priority));
+      filtered.sort((a, b) => {
+        const priorityOrder = { high: 1, medium: 2, low: 3 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
     }
     if (filterOptions.sortByTags) {
       const enteredTags = filterOptions.tags.split(',').map((tag) => tag.trim().toLowerCase());
       filtered = filtered.filter((task) =>
-        enteredTags.some((enteredTag) => task.tags.some((tag) => tag.toLowerCase() === enteredTag))
+        enteredTags.every((enteredTag) => task.tags.some((tag) => tag.toLowerCase() === enteredTag))
       );
+  
+      if (filtered.length === 0) {
+        filtered = []; // Set filtered to an empty array
+      }
     }
     if (filterOptions.sortByCompleted) {
       filtered = filtered.filter((task) => !task.completed);
     }
-
+  
     if (filterOptions.sortAlphabeticalOrder === 'asc') {
-      filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
     } else if (filterOptions.sortAlphabeticalOrder === 'desc') {
-      filtered = filtered.sort((a, b) => b.title.localeCompare(a.title));
-    }
-
+      filtered.sort((a, b) => b.title.localeCompare(a.title));
+    }  
     setFilteredTasks(filtered);
     setShowFilterForm(false);
   };
+  
+  
+  
+  
 
   return (
     <main className="task-page">
