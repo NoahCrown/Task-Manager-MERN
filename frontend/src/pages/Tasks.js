@@ -40,7 +40,7 @@ const Tasks = () => {
     if (user) {
       fetchTasks();
     }
-  }, [dispatch, user,showFilterForm, filteredTasks ]);
+  }, [dispatch, user ]);
 
 
   const handleAddTask = () => {
